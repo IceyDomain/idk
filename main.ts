@@ -1,22 +1,4 @@
 function World1 () {
-    mySprite.setImage(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `)
     platformer.setCharacterAnimationsEnabled(mySprite, true)
     platformer.moveSprite(mySprite, true, 60)
     World = 1
@@ -143,6 +125,11 @@ function World1 () {
         4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
         `)
     tiles.setCurrentTilemap(tilemap`level1`)
+    scene.cameraFollowSprite(mySprite)
+    platformer.setGravity(500)
+    for (let value of tiles.getTilesByType(assets.tile`myTile1`)) {
+        tiles.placeOnTile(mySprite, value)
+    }
 }
 let mySprite: platformer.PlatformerSprite = null
 let World = 0
@@ -402,26 +389,26 @@ scene.setBackgroundImage(img`
     `)
 screenTransitions.startTransition(screenTransitions.WavyHorizontal, 5000, true, true)
 mySprite = platformer.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
+    . . . . f f f f f . . . . . . . 
+    . . . f e e e e e f . . . . . . 
+    . . f d d d d e e e f . . . . . 
+    . c d f d d f d e e f f . . . . 
+    . c d f d d f d e e d d f . . . 
+    c d e e d d d d e e b d c . . . 
+    c d d d d c d d e e b d c . . . 
+    c c c c c d d e e e f c . . . . 
+    . f d d d d e e e f f . . . . . 
+    . . f f f f f e e e e f . . . . 
+    . . . . f f e e e e e e f . f f 
+    . . . f e e f e e f e e f . e f 
+    . . f e e f e e f e e e f . e f 
+    . f b d f d b f b b f e f f e f 
+    . f d d f d d f d d b e f f f f 
+    . . f f f f f f f f f f f f f . 
     `, SpriteKind.Player)
 World1()
 game.onUpdate(function () {
-    if (blockSettings.readString("Name") == "arkShadow") {
+    if (blockSettings.readString("Name") == "arkshado") {
         if (World == 1) {
             mySprite.setImage(img`
                 . . . . . . f f f f . . . . . . 
@@ -444,96 +431,200 @@ game.onUpdate(function () {
             platformer.loopFrames(
             mySprite,
             [img`
+                . . . . f f f f f f . . . . . . 
+                . . . f 2 f e e e e f f . . . . 
+                . . f 2 2 2 f e e e e f f . . . 
+                . . f e e e e f f e e e f . . . 
+                . f e 2 2 2 2 e e f f f f . . . 
+                . f 2 e f f f f 2 2 2 e f . . . 
+                . f f f e e e f f f f f f f . . 
+                . f e e 4 4 f b e 4 4 e f f . . 
+                . . f e d d f 1 4 d 4 e e f . . 
+                . . . f d d d d 4 e e e f . . . 
+                . . . f e 4 4 4 e e f f . . . . 
+                . . . f 2 2 2 e d d 4 . . . . . 
+                . . . f 2 2 2 e d d e . . . . . 
+                . . . f 5 5 4 f e e f . . . . . 
+                . . . . f f f f f f . . . . . . 
+                . . . . . . f f f . . . . . . . 
+                `,img`
                 . . . . . . . . . . . . . . . . 
+                . . . . f f f f f f . . . . . . 
+                . . . f 2 f e e e e f f . . . . 
+                . . f 2 2 2 f e e e e f f . . . 
+                . . f e e e e f f e e e f . . . 
+                . f e 2 2 2 2 e e f f f f . . . 
+                . f 2 e f f f f 2 2 2 e f . . . 
+                . f f f e e e f f f f f f f . . 
+                . f e e 4 4 f b e 4 4 e f f . . 
+                . . f e d d f 1 4 d 4 e e f . . 
+                . . . f d d d e e e e e f . . . 
+                . . . f e 4 e d d 4 f . . . . . 
+                . . . f 2 2 e d d e f . . . . . 
+                . . f f 5 5 f e e f f f . . . . 
+                . . f f f f f f f f f f . . . . 
+                . . . f f f . . . f f . . . . . 
+                `,img`
+                . . . . f f f f f f . . . . . . 
+                . . . f 2 f e e e e f f . . . . 
+                . . f 2 2 2 f e e e e f f . . . 
+                . . f e e e e f f e e e f . . . 
+                . f e 2 2 2 2 e e f f f f . . . 
+                . f 2 e f f f f 2 2 2 e f . . . 
+                . f f f e e e f f f f f f f . . 
+                . f e e 4 4 f b e 4 4 e f f . . 
+                . . f e d d f 1 4 d 4 e e f . . 
+                . . . f d d d d 4 e e e f . . . 
+                . . . f e 4 4 4 e e f f . . . . 
+                . . . f 2 2 2 e d d 4 . . . . . 
+                . . . f 2 2 2 e d d e . . . . . 
+                . . . f 5 5 4 f e e f . . . . . 
+                . . . . f f f f f f . . . . . . 
+                . . . . . . f f f . . . . . . . 
+                `,img`
                 . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
+                . . . . f f f f f f . . . . . . 
+                . . . f 2 f e e e e f f . . . . 
+                . . f 2 2 2 f e e e e f f . . . 
+                . . f e e e e f f e e e f . . . 
+                . f e 2 2 2 2 e e f f f f . . . 
+                . f 2 e f f f f 2 2 2 e f . . . 
+                . f f f e e e f f f f f f f . . 
+                . f e e 4 4 f b e 4 4 e f f . . 
+                . . f e d d f 1 4 d 4 e e f . . 
+                . . . f d d d d 4 e e e f . . . 
+                . . . f e 4 4 4 e d d 4 . . . . 
+                . . . f 2 2 2 2 e d d e . . . . 
+                . . f f 5 5 4 4 f e e f . . . . 
+                . . f f f f f f f f f f . . . . 
+                . . . f f f . . . f f . . . . . 
                 `],
-            500,
+            100,
+            platformer.rule(platformer.PlatformerSpriteState.FacingLeft, platformer.PlatformerSpriteState.Moving)
+            )
+            platformer.loopFrames(
+            mySprite,
+            [img`
+                . . . . . . f f f f f f . . . . 
+                . . . . f f e e e e f 2 f . . . 
+                . . . f f e e e e f 2 2 2 f . . 
+                . . . f e e e f f e e e e f . . 
+                . . . f f f f e e 2 2 2 2 e f . 
+                . . . f e 2 2 2 f f f f e 2 f . 
+                . . f f f f f f f e e e f f f . 
+                . . f f e 4 4 e b f 4 4 e e f . 
+                . . f e e 4 d 4 1 f d d e f . . 
+                . . . f e e e 4 d d d d f . . . 
+                . . . . f f e e 4 4 4 e f . . . 
+                . . . . . 4 d d e 2 2 2 f . . . 
+                . . . . . e d d e 2 2 2 f . . . 
+                . . . . . f e e f 4 5 5 f . . . 
+                . . . . . . f f f f f f . . . . 
+                . . . . . . . f f f . . . . . . 
+                `,img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . f f f f f f . . . . 
+                . . . . f f e e e e f 2 f . . . 
+                . . . f f e e e e f 2 2 2 f . . 
+                . . . f e e e f f e e e e f . . 
+                . . . f f f f e e 2 2 2 2 e f . 
+                . . . f e 2 2 2 f f f f e 2 f . 
+                . . f f f f f f f e e e f f f . 
+                . . f f e 4 4 e b f 4 4 e e f . 
+                . . f e e 4 d 4 1 f d d e f . . 
+                . . . f e e e e e d d d f . . . 
+                . . . . . f 4 d d e 4 e f . . . 
+                . . . . . f e d d e 2 2 f . . . 
+                . . . . f f f e e f 5 5 f f . . 
+                . . . . f f f f f f f f f f . . 
+                . . . . . f f . . . f f f . . . 
+                `,img`
+                . . . . . . f f f f f f . . . . 
+                . . . . f f e e e e f 2 f . . . 
+                . . . f f e e e e f 2 2 2 f . . 
+                . . . f e e e f f e e e e f . . 
+                . . . f f f f e e 2 2 2 2 e f . 
+                . . . f e 2 2 2 f f f f e 2 f . 
+                . . f f f f f f f e e e f f f . 
+                . . f f e 4 4 e b f 4 4 e e f . 
+                . . f e e 4 d 4 1 f d d e f . . 
+                . . . f e e e 4 d d d d f . . . 
+                . . . . f f e e 4 4 4 e f . . . 
+                . . . . . 4 d d e 2 2 2 f . . . 
+                . . . . . e d d e 2 2 2 f . . . 
+                . . . . . f e e f 4 5 5 f . . . 
+                . . . . . . f f f f f f . . . . 
+                . . . . . . . f f f . . . . . . 
+                `,img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . f f f f f f . . . . 
+                . . . . f f e e e e f 2 f . . . 
+                . . . f f e e e e f 2 2 2 f . . 
+                . . . f e e e f f e e e e f . . 
+                . . . f f f f e e 2 2 2 2 e f . 
+                . . . f e 2 2 2 f f f f e 2 f . 
+                . . f f f f f f f e e e f f f . 
+                . . f f e 4 4 e b f 4 4 e e f . 
+                . . f e e 4 d 4 1 f d d e f . . 
+                . . . f e e e 4 d d d d f . . . 
+                . . . . 4 d d e 4 4 4 e f . . . 
+                . . . . e d d e 2 2 2 2 f . . . 
+                . . . . f e e f 4 4 5 5 f f . . 
+                . . . . f f f f f f f f f f . . 
+                . . . . . f f . . . f f f . . . 
+                `],
+            100,
+            platformer.rule(platformer.PlatformerSpriteState.FacingRight, platformer.PlatformerSpriteState.Moving)
+            )
+            platformer.loopFrames(
+            mySprite,
+            [img`
+                . . . . f f f f f f . . . . . . 
+                . . . f 2 f e e e e f f . . . . 
+                . . f 2 2 2 f e e e e f f . . . 
+                . . f e e e e f f e e e f . . . 
+                . f e 2 2 2 2 e e f f f f . . . 
+                . f 2 e f f f f 2 2 2 e f . . . 
+                . f f f e e e f f f f f f f . . 
+                . f e e 4 4 f b e 4 4 e f f . . 
+                . . f e d d f 1 4 d 4 e e f . . 
+                . . . f d d d d 4 e e e f . . . 
+                . . . f e 4 4 4 e e f f . . . . 
+                . . . f 2 2 2 e d d 4 . . . . . 
+                . . . f 2 2 2 e d d e . . . . . 
+                . . . f 5 5 4 f e e f . . . . . 
+                . . . . f f f f f f . . . . . . 
+                . . . . . . f f f . . . . . . . 
+                `],
+            100,
             platformer.rule(platformer.PlatformerSpriteState.FacingLeft)
             )
             platformer.loopFrames(
             mySprite,
             [img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
+                . . . . . . f f f f f f . . . . 
+                . . . . f f e e e e f 2 f . . . 
+                . . . f f e e e e f 2 2 2 f . . 
+                . . . f e e e f f e e e e f . . 
+                . . . f f f f e e 2 2 2 2 e f . 
+                . . . f e 2 2 2 f f f f e 2 f . 
+                . . f f f f f f f e e e f f f . 
+                . . f f e 4 4 e b f 4 4 e e f . 
+                . . f e e 4 d 4 1 f d d e f . . 
+                . . . f e e e 4 d d d d f . . . 
+                . . . . f f e e 4 4 4 e f . . . 
+                . . . . . 4 d d e 2 2 2 f . . . 
+                . . . . . e d d e 2 2 2 f . . . 
+                . . . . . f e e f 4 5 5 f . . . 
+                . . . . . . f f f f f f . . . . 
+                . . . . . . . f f f . . . . . . 
                 `],
-            500,
-            platformer.rule(platformer.PlatformerSpriteState.FacingLeft)
-            )
-            platformer.loopFrames(
-            mySprite,
-            [img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                `],
-            500,
-            platformer.rule(platformer.PlatformerSpriteState.FacingLeft)
-            )
-            platformer.loopFrames(
-            mySprite,
-            [img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                `],
-            500,
-            platformer.rule(platformer.PlatformerSpriteState.FacingLeft)
+            100,
+            platformer.rule(platformer.PlatformerSpriteState.FacingRight)
             )
             platformer.moveSprite(mySprite, true, 60)
+            platformer.setGravity(300)
+            platformer.setCharacterAnimationsEnabled(mySprite, true)
         }
     } else if (blockSettings.readString("Name") == "No_W") {
         if (World == 1) {
